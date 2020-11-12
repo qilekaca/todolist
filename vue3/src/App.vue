@@ -22,78 +22,26 @@
 </template>
 
 <script>
-import { ref, computed, watch, onMounted } from 'vue'
+import useList from '@/composables/useList'
+import useTodo from '@/composables/useTodo'
+import useFilter from '@/composables/useFilter'
 export default {
-  name: 'App',
   setup() {
-    let list = ref([])
-    const getList = () => {
-      list.value = JSON.parse(localStorage.getItem('todos') || '[]')
-    }
-    onMounted(() => {
-      getList()
-    })
-    watch(
-      list,
-      () => {
-        localStorage.setItem('todos', JSON.stringify(list.value))
-      },
-      {
-        deep: true
-      }
-    )
-    // -------------------------
-    let nav = ref(['全部', '未完成', '完成'])
-    let selected = ref('全部')
-    // 过滤列表
-    const filterList = computed(() => {
-      switch (selected.value) {
-        case '未完成':
-          return list.value.filter((x) => x.status === false)
-        case '完成':
-          return list.value.filter((x) => x.status === true)
-        default:
-          return list.value
-      }
-    })
-    // 切换标签
-    const changeNav = (title) => {
-      selected.value = title
-    }
-    // ---------------------------
-    let todoContent = ref('')
-    // 添加todo
-    const add = () => {
-      const todo = {
-        id: new Date().getTime(),
-        content: todoContent.value,
-        status: false
-      }
-      list.value.unshift(todo)
-      todoContent.value = ''
-    }
-    // 删除todo
-    const del = (id) => {
-      list.value = list.value.filter((x) => x.id !== id)
-    }
-    // 修改todo
-    const done = (id) => {
-      for (const item of list.value) {
-        if (item.id === id) {
-          item.status = !item.status
-        }
-      }
-    }
+    const { list } = useList()
+    // useTodo和useFilter都需要使用list，通过传参传递给这两个函数
+    const { todoContent, add, del, done } = useTodo(list)
+    const { nav, selected, filterList, changeNav } = useFilter(list)
+
     return {
       list,
-      nav,
-      selected,
-      filterList,
-      changeNav,
       todoContent,
       add,
       del,
-      done
+      done,
+      nav,
+      selected,
+      filterList,
+      changeNav
     }
   }
 }

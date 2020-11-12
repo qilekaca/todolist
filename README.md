@@ -384,6 +384,7 @@ export default function useTodo(list) {
   }
 
   return {
+    todoContent,
     add,
     del,
     done
@@ -430,11 +431,12 @@ export default {
   setup() {
     const { list } = useList()
     // useTodo和useFilter都需要使用list，通过传参传递给这两个函数
-    const { add, del, done } = useTodo(list)
+    const { todoContent, add, del, done } = useTodo(list)
     const { nav, selected, filterList, changeNav } = useFilter(list)
 
     return {
       list,
+      todoContent,
       add,
       del,
       done,
