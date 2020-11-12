@@ -21,30 +21,17 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import useList from '@/composables/useList'
 import useTodo from '@/composables/useTodo'
 import useFilter from '@/composables/useFilter'
-export default {
-  setup() {
-    const { list } = useList()
-    // useTodo和useFilter都需要使用list，通过传参传递给这两个函数
-    const { todoContent, add, del, done } = useTodo(list)
-    const { nav, selected, filterList, changeNav } = useFilter(list)
 
-    return {
-      list,
-      todoContent,
-      add,
-      del,
-      done,
-      nav,
-      selected,
-      filterList,
-      changeNav
-    }
-  }
-}
+const { list } = useList()
+export { list }
+const { todoContent, add, del, done } = useTodo(list)
+export { todoContent, add, del, done }
+const { nav, selected, filterList, changeNav } = useFilter(list)
+export { nav, selected, filterList, changeNav }
 </script>
 
 <style>

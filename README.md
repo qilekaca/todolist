@@ -462,8 +462,8 @@ import useFilter from '@/composables/useFilter'
 
 const { list } = useList()
 export { list }
-const { add, del, done } = useTodo(list)
-export { add, del, done }
+const { todoContent, add, del, done } = useTodo(list)
+export { todoContent, add, del, done }
 const { nav, selected, filterList, changeNav } = useFilter(list)
 export { nav, selected, filterList, changeNav }
 </script>
